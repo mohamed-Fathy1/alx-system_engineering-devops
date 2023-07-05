@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # print Best School 10 times
 
-for file in $( find ./ -type f | cut -d '-' -f 2 )
+cmd=$(ls)
+for file in $( for i in $cmd; do echo "$i" | cut -d "-" -f 2 ; done )
 do
 	echo "$file"
 done
