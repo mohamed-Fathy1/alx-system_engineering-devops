@@ -2,8 +2,7 @@
 # print Best School 10 times
 
 
-while IFS=: read -r user gang city ride name passcode url
+while IFS=: read -r username password userid groupid userdesc homedir shell
 do
-  echo "The user $user is part of the $name gang, lives in $passcode and rides $gang. $url's place is protected by the passcode $city, more info about the user here: $ride"
-done < "/etc/passwd"
-
+  echo "The user $username is part of the $groupid gang, lives in $homedir and rides $shell. $userid's place is protected by the passcode $password, more info about the user here: $userdesc"
+done < /etc/passwd
