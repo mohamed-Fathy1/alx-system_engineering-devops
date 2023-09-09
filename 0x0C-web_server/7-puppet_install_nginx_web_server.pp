@@ -17,8 +17,9 @@ $nginx_file = "
 server {
     listen 80;
     listen [::]:80 default_server;
-    root   /etc/nginx/html;
+    root   /var/www/html;
     index  index.html index.htm;
+
     location /redirect_me {
         return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
     }
