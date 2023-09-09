@@ -31,5 +31,5 @@ file { '/etc/nginx/sites-available/default':
 }
 
 exec { 'execute-command':
-    command => '/usr/sbin/service nginx restart',
+    command => 'service nginx restart',
 }
