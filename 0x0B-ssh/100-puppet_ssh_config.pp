@@ -1,40 +1,62 @@
-# using puppet to make changes to the default ssh config file
-# so that one can connect to a server without typing a password.
+# set up your client SSH configuration file so that you can connect to a server without typing a password.
 
-include stdlib
+$ssh_config = "
+# This is the ssh client system-wide configuration file.  See
+# ssh_config(5) for more information.  This file provides defaults for
+# users, and the values can be changed in per-user configuration files
+# or on the command line.
 
-file_line { 'SSH Private Key':
-  path               => '/etc/ssh/ssh_config',
-  line               => '    IdentityFile ~/.ssh/school',
-  match              => '^[#]+[\s]*(?i)IdentityFile[\s]+~/.ssh/id_rsa$',
-  replace            => true,
-  append_on_no_match => true
+# Configuration data is parsed as follows:
+#  1. command line options
+#  2. user-specific file
+#  3. system-wide file
+# Any configuration value is only changed the first time it is set.
+# Thus, host-specific definitions should be at the beginning of the
+# configuration file, and defaults at the end.
+
+# Site-wide defaults for some commonly used options.  For a comprehensive
+# list of available options, their meanings and defaults, please see the
+# ssh_config(5) man page.
+
+Include /etc/ssh/ssh_config.d/*.conf
+
+Host *
+#   ForwardAgent no
+#   ForwardX11 yes
+#   ForwardX11Trusted yes
+PasswordAuthentication no
+#   HostbasedAuthentication no
+#   GSSAPIAuthentication no
+#   GSSAPIDelegateCredentials no
+#   GSSAPIKeyExchange no
+#   GSSAPITrustDNS no
+#   BatchMode no
+#   CheckHostIP yes
+#   AddressFamily any
+#   ConnectTimeout 0
+#   StrictHostKeyChecking ask
+IdentityFile ~/.ssh/school
+#   IdentityFile ~/.ssh/id_rsa
+#   IdentityFile ~/.ssh/id_dsa
+#   IdentityFile ~/.ssh/id_ecdsa
+#   IdentityFile ~/.ssh/id_ed25519
+#   Port 22
+#   Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc
+#   MACs hmac-md5,hmac-sha1,umac-64@openssh.com
+#   EscapeChar ~
+#   Tunnel no
+#   TunnelDevice any:any
+#   PermitLocalCommand no
+#   VisualHostKey no
+#   ProxyCommand ssh -q -W %h:%p gateway.example.com
+#   RekeyLimit 1G 1h
+    SendEnv LANG LC_*
+    HashKnownHosts yes
+    GSSAPIAuthentication yes
+"
+
+file { '/etc/ssh/ssh_config':
+    ensure  => file,
+    content => $ssh_config,
+    mode    => '0644',
 }
-
-# Regex match explanation
-#
-# ^       beginning of the line
-# [#]*  atleast one hash character
-# [\s]*  zero or more white space characters
-# (?i)IdentityFile case insensitive "IdentityFile"
-# [\s]+ at least one whitespace character
-# ~/.ssh/id_rsa The ssh private key file path we want to replace
-# $      end of the line
-
-file_line { 'Deny Password Auth':
-  path               => '/etc/ssh/ssh_config',
-  line               => '    PasswordAuthentication no',
-  match              => '^[#]+[\s]*(?i)PasswordAuthentication[\s]+(yes|no)$',
-  replace            => true,
-  append_on_no_match => true
-}
-
-# Regex match explanation
-#
-# ^       beginning of the line
-# [#]*  atleast one hash character
-# [\s]*  zero or more white space characters
-# (?i)PasswordAuthentication case insensitive "PasswordAuthentication"
-# [\s]+ at least one whitespace character
-# (yes|no) with the value "yes" or the value "no"
-# $      end of the line
