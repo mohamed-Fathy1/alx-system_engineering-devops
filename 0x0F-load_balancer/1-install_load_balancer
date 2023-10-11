@@ -12,6 +12,9 @@ mkdir -p /etc/haproxy
 touch /etc/haproxy/haproxy.cfg
 
 config_file="
+defaults
+    mode http
+
 frontend httpClient
     bind *:80
     timeout client 60s
