@@ -22,7 +22,7 @@ file { '/var/www/error/error_40x.html':
   content => 'Ceci n\'est pas une page',
 }
 
-$hostname = $trusted['certname']
+$hostname = $facts['networking']['hostname']
 
 $nginx_config = "
 server {
