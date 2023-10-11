@@ -27,7 +27,7 @@ file { '/var/www/error/error_40x.html':
   content => 'Ceci n\'est pas une page',
 }
 
-$hostname = $::hostname
+$hostname = $facts['fqdn']
 
 $nginx_config = "
 server {
