@@ -27,4 +27,8 @@ backend allservers
 
 echo "$config_file" > /etc/haproxy/haproxy.cfg
 
+echo "ENABLED=1" | sudo dd status=none of=/etc/default/haproxy
+
+printf "\n\n\n\n Starting HAProxy \n\n\n\n"
+
 haproxy -f /etc/haproxy/haproxy.cfg
