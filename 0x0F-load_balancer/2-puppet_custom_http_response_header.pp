@@ -27,33 +27,11 @@ file { '/var/www/error/error_40x.html':
   content => 'Ceci n\'est pas une page',
 }
 
-$hostname = $trusted['certname']
-
-$nginx_config = "
-server {
-  listen 80;
-  listen [::]:80 default_server;
-  root   /var/www/html;
-  index  index.html index.htm;
-
-  location / {
-    add_header X-Served-By ${hostname};
-  }
-
-  location /redirect_me {
-    return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-  }
-
-  error_page 404 /error_40x.html;
-  location = /error_40x.html {
-    root /var/www/error;
-    internal;
-  }
-}"
-
-file { '/etc/nginx/sites-available/default':
-  ensure  => file,
-  content => $nginx_config,
+exec { 'add_header':
+  provider    => shell,
+  environment => ["HOST=${hostname}"],
+  command     => 'sudo sed -i "s/include \/etc\/nginx\/sites-enabled\/\*;/include \/etc\/nginx\/sites-enabled\/\*;\n\tadd_header X-Served-By \"$HOST\";/" /etc/nginx/nginx.conf',
+  before      => Exec['restart Nginx'],
 }
 
 service { 'nginx':
