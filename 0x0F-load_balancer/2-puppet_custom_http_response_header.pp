@@ -23,14 +23,15 @@ file { '/var/www/error/error_40x.html':
     content => 'Ceci n\'est pas une page',
 }
 
-$nginx_config = "server {
+$nginx_config = "
+server {
     listen 80;
     listen [::]:80 default_server;
     root   /var/www/html;
     index  index.html index.htm;
 
     location / {
-        add_header X-Served-By ${$(hostname)};
+        add_header X-Served-By \$hostname;
     }
 
     location /redirect_me {
@@ -49,6 +50,9 @@ file { '/etc/nginx/sites-available/default':
     content => $nginx_config,
 }
 
-exec { 'execute-command':
-    command => '/usr/sbin/service nginx restart',
+service { 'nginx':
+    ensure    => 'running',
+    enable    => true,
+    require   => Package['nginx'],
+    subscribe => File['/etc/nginx/sites-available/default'],
 }
