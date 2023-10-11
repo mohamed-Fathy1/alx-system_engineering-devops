@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 # install & configer HAProxy on server
-apt-get update
-apt-get install -y --no-install-recommends software-properties-common
-add-apt-repository ppa:vbernat/haproxy-2.8 -y
+sudo apt-get update
 
 printf "\n\n\n\ninstalling HAProxy\n\n\n\n"
 
-apt-get install -y haproxy
+sudo apt-get install -y haproxy
 
 mkdir -p /etc/haproxy
 touch /etc/haproxy/haproxy.cfg
@@ -34,4 +32,4 @@ echo "ENABLED=1" | sudo dd status=none of=/etc/default/haproxy
 
 printf "\n\n\n\n Starting HAProxy \n\n\n\n"
 
-haproxy -f /etc/haproxy/haproxy.cfg
+sudo haproxy -f /etc/haproxy/haproxy.cfg
