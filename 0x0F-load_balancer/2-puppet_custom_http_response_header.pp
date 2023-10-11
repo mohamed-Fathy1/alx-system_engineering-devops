@@ -1,4 +1,4 @@
-# Installs a Nginx server with custome HTTP header
+#  install and configure an Nginx server using Puppet instead of Bash.
 
 exec {'update':
   provider => shell,
@@ -12,11 +12,43 @@ exec {'install Nginx':
   before   => Exec['add_header'],
 }
 
-exec { 'add_header':
-  provider    => shell,
-  environment => ["HOST=${hostname}"],
-  command     => 'sudo sed -i "s/include \/etc\/nginx\/sites-enabled\/\*;/include \/etc\/nginx\/sites-enabled\/\*;\n\tadd_header X-Served-By \"$HOST\";/" /etc/nginx/nginx.conf',
-  before      => Exec['restart Nginx'],
+file { '/var/www/html/index.html':
+  ensure  => file,
+  content => 'Hello World!',
+}
+
+file { '/var/www/error/error_40x.html':
+  ensure  => file,
+  content => 'Ceci n\'est pas une page',
+}
+
+$hostname = $::hostname
+
+$nginx_config = "
+server {
+  listen 80;
+  listen [::]:80 default_server;
+  root   /var/www/html;
+  index  index.html index.htm;
+
+  location / {
+    add_header X-Served-By ${hostname};
+  }
+
+  location /redirect_me {
+    return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+  }
+
+  error_page 404 /error_40x.html;
+  location = /error_40x.html {
+    root /var/www/error;
+    internal;
+  }
+}"
+
+file { '/etc/nginx/sites-available/default':
+  ensure  => file,
+  content => $nginx_config,
 }
 
 exec { 'restart Nginx':
