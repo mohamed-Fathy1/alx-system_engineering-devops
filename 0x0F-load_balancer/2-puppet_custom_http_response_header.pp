@@ -24,6 +24,8 @@ file { '/var/www/error/error_40x.html':
     content => 'Ceci n\'est pas une page',
 }
 
+$hostname = $::hostname
+
 $nginx_config = "
 server {
     listen 80;
@@ -32,7 +34,7 @@ server {
     index  index.html index.htm;
 
     location / {
-        add_header X-Served-By \$hostname;
+        add_header X-Served-By ${hostname};
     }
 
     location /redirect_me {
