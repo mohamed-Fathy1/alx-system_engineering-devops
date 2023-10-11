@@ -1,8 +1,9 @@
 #  install and configure an Nginx server using Puppet instead of Bash.
 
-package { 'update':
-    ensure   => 'installed',
-    provider => 'apt',
+exec { 'apt-get update':
+    command => '/usr/bin/apt-get update',
+    path    => ['/usr/bin', '/usr/sbin'],
+    unless  => '/usr/bin/test -e /var/lib/apt/periodic/update-success-stamp',
 }
 
 package { 'nginx':
