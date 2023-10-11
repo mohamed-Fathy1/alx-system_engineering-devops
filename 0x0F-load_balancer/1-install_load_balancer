@@ -32,4 +32,8 @@ echo "ENABLED=1" | sudo dd status=none of=/etc/default/haproxy
 
 printf "\n\n\n\n Starting HAProxy \n\n\n\n"
 
-sudo haproxy -f /etc/haproxy/haproxy.cfg
+if [ "$(pgrep -c  haproxy)" -gt 0 ]; then
+    sudo service haproxy restart
+else
+    sudo service haproxy start
+fi
