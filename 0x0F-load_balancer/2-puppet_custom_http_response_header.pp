@@ -23,14 +23,14 @@ file { '/var/www/error/error_40x.html':
     content => 'Ceci n\'est pas une page',
 }
 
-nginx_config=$(printf "server {
+$nginx_config = "server {
     listen 80;
     listen [::]:80 default_server;
     root   /var/www/html;
     index  index.html index.htm;
 
     location / {
-        add_header X-Served-By %s;
+        add_header X-Served-By ${$(hostname)};
     }
 
     location /redirect_me {
@@ -42,7 +42,7 @@ nginx_config=$(printf "server {
         root /var/www/error;
         internal;
     }
-}" "$hostname")
+}"
 
 file { '/etc/nginx/sites-available/default':
     ensure  => file,
