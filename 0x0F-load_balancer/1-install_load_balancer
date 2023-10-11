@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# install & configer HAProxy on server
+apt-get update
+apt-get install -y --no-install-recommends software-properties-common
+add-apt-repository ppa:vbernat/haproxy-2.8 -y
+
+printf "\n\n\n\ninstalling HAProxy\n\n\n\n"
+
+apt-get install -y haproxy
+
+mkdir -p /etc/haproxy
+touch /etc/haproxy/haproxy.cfg
+
+config_file="
+frontend httpClient
+    bind *:80
+    timeout client 60s
+    default_backend allservers
+
+backend allservers
+    timeout connect 10s
+    timeout server 100s
+    balance roundrobin
+    server 248522-web-01 54.236.217.62:80 check
+    server 248522-web-02 100.26.229.89:80 check
+"
+
+echo "$config_file" > /etc/haproxy/haproxy.cfg
+
+haproxy -f /etc/haproxy/haproxy.cfg
