@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# he subdomain [SUB_DOMAIN] is a [RECORD_TYPE] record and points to [DESTINATION]
+
+
+url=$1
+sub_domain=$2
+
+get_ip ()
+{
+    dig "$1"."$2" | grep -A1 'ANSWER SECTION:' | grep "$1"."$2" | awk '{print $NF}'
+}
+
+if [ $# -eq 2 ]; then
+    echo "The subdomain $sub_domain is a A record and points to $(get_ip "$sub_domain" "$url")"
+    exit 0
+fi
+
+if [ $# -eq 1 ]; then
+    echo "The subdomain www is a A record and points to $(get_ip "www" "$url")"
+    echo "The subdomain lb-01 is a A record and points to $(get_ip "lb-01" "$url")"
+    echo "The subdomain web-01 is a A record and points to $(get_ip "web-01" "$url")"
+    echo "The subdomain web-02 is a A record and points to $(get_ip "web-02" "$url")"
+    exit 0
+fi
