@@ -1,0 +1,18 @@
+
+defaults
+    mode http
+
+frontend httpClient
+    bind *:80
+    bind *:443 ssl crt /etc/haproxy/certs/www.mohamedfathy.tech.pem
+    redirect scheme https code 301 if !{ ssl_fc }
+    timeout client 60s
+    default_backend allservers
+
+backend allservers
+    timeout connect 10s
+    timeout server 100s
+    balance roundrobin
+    server 248522-web-01 54.236.217.62:80 check
+    server 248522-web-02 100.26.229.89:80 check
+
