@@ -21,6 +21,7 @@ for todo in todos:
     if todo["completed"]:
         completed_todos.append(todo["title"])
 
-print(f"Employee {employee['name']} is done with tasks({len(completed_todos)}/{len(todos)}):")
+print(f"Employee {employee['name']} is done with\
+tasks({len(completed_todos)}/{len(todos)}):")
 for completed in completed_todos:
     print(f"\t{completed}")
