@@ -26,7 +26,7 @@ if __name__ == '__main__':
     # export to CSV
     with open("{}.csv".format(employee_ID), "w") as csvfile:
         write = csv.writer(csvfile, delimiter=',',
-                           quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                           quotechar='"', quoting=csv.QUOTE_ALL)
         for todo in todos:
-            write.writerow([employee_ID, employee.get("name"),
+            write.writerow([employee_ID, employee["name"],
                             todo["completed"], todo["title"]])
