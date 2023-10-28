@@ -1,28 +1,28 @@
 #!/usr/bin/python3
-'''A script that gathers employee name completed
-tasks and total number of tasks from an API
-'''
-import requests
-from sys import argv
+"""Returns to-do list information for a given employee ID."""
 
 
-employee_ID = argv[1]
-req = requests.get("https://jsonplaceholder.typicode.com/todos",
-                   params={"userId": employee_ID})
+if __name__ == '__main__':
+    import requests
+    from sys import argv
 
-employee = requests.get("https://jsonplaceholder.typicode.com/users/{}"
-                        .format(employee_ID))
+    employee_ID = argv[1]
+    req = requests.get("https://jsonplaceholder.typicode.com/todos",
+                       params={"userId": employee_ID})
 
-employee = employee.json()
+    employee = requests.get("https://jsonplaceholder.typicode.com/users/{}"
+                            .format(employee_ID))
 
-todos = req.json()
-completed_todos = []
+    employee = employee.json()
 
-for todo in todos:
-    if todo["completed"]:
-        completed_todos.append(todo["title"])
+    todos = req.json()
+    completed_todos = []
 
-print(f"Employee {employee['name']} is done with\
-tasks({len(completed_todos)}/{len(todos)}):")
-for completed in completed_todos:
-    print(f"\t{completed}")
+    for todo in todos:
+        if todo["completed"]:
+            completed_todos.append(todo["title"])
+
+    print("Employee {} is done with tasks({}/{}):"
+          .format(employee['name'], len(completed_todos), len(todos)))
+    for completed in completed_todos:
+        print(f"\t{completed}")
