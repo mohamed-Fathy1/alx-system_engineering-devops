@@ -22,6 +22,7 @@ if __name__ == '__main__':
         del todo["id"]
         del todo["userId"]
         todo["username"] = employee["username"]
+        todo["task"] = todo.pop("title")
 
     # export to JSON
     employee_dict = {}
