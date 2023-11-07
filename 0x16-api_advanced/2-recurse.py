@@ -33,4 +33,4 @@ rv:60.0) Gecko/20100101 Firefox/81.0"
 
 def recurse(subreddit, hot_list=[]):
     '''Get the top 10 hot posts for a given subreddit'''
-    return top_hot_subreddit(subreddit, hot_list, count=0, after=None)
+    return top_hot_subreddit(subreddit, hot_list)
