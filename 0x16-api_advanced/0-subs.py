@@ -14,4 +14,6 @@ rv:60.0) Gecko/20100101 Firefox/81.0"
 
     req = requests.get(url, headers=headers, allow_redirects=False)
 
+    if req.status_code != 200:
+        return 0
     return req.json().get('data').get('subscribers')
