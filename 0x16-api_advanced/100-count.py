@@ -17,8 +17,7 @@ rv:60.0) Gecko/20100101 Firefox/81.0"
     req = requests.get(url, headers=headers, allow_redirects=False)
 
     if req.status_code != 200:
-        print("")
-        return
+        return None
 
     res = req.json().get('data')
     after = res.get('after')
@@ -36,10 +35,6 @@ rv:60.0) Gecko/20100101 Firefox/81.0"
     if after:
         top_hot_subreddit(subreddit, word_list, count, after, word_dict)
 
-    if len(word_dict) == 0:
-            print("")
-            return
-
     return word_dict
 
 
@@ -52,3 +47,5 @@ def count_words(subreddit, word_list):
                              reverse=True)
         for key, val in sorted_dict:
             print(f"{key}: {val}")
+
+    return None
