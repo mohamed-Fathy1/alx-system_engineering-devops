@@ -42,7 +42,8 @@ def count_words(subreddit, word_list):
     '''Get the top 10 hot posts for a given subreddit'''
     word_list = [word.lower() for word in word_list]
     result = top_hot_subreddit(subreddit, word_list)
-    sorted_dict = sorted(result.items(), key=lambda item: item[1],
-                         reverse=True)
-    for key, val in sorted_dict:
-        print(f"{key}: {val}")
+    if result:
+        sorted_dict = sorted(result.items(), key=lambda item: item[1],
+                             reverse=True)
+        for key, val in sorted_dict:
+            print(f"{key}: {val}")
