@@ -16,6 +16,6 @@ rv:60.0) Gecko/20100101 Firefox/81.0"
 
     if req.status_code != 200:
         print(None)
-
-    for res in req.json().get('data').get('children'):
-        print(res.get('data').get('title'))
+    else:
+        for res in req.json().get('data').get('children'):
+            print(res.get('data').get('title'))
