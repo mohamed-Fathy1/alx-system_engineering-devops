@@ -12,6 +12,6 @@ def number_of_subscribers(subreddit):
 rv:60.0) Gecko/20100101 Firefox/81.0"
             }
 
-    req = requests.get(url, headers=headers)
+    req = requests.get(url, headers=headers, allow_redirects=False)
 
     return req.json().get('data').get('subscribers')
