@@ -46,5 +46,3 @@ def count_words(subreddit, word_list):
                          reverse=True)
     for key, val in sorted_dict:
         print(f"{key}: {val}")
-
-    return result
