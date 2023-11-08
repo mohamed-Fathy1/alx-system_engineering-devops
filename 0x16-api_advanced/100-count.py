@@ -16,10 +16,15 @@ rv:60.0) Gecko/20100101 Firefox/81.0"
 
     req = requests.get(url, headers=headers, allow_redirects=False)
 
-    if req.status_code != 200:
-        return None
+    try:
+        if req.status_code == 404:
+            raise Exception
+        req = req.json()
+    except Exception:
+        print("")
+        return
 
-    res = req.json().get('data')
+    res = req.get('data')
     after = res.get('after')
     count += res.get('dist')
     titles = res.get('children')
